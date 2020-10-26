@@ -23,6 +23,9 @@ use sp_version::RuntimeVersion;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
 
+use frame_system::EnsureSignedBy;
+pub use name_service::ExtensionConfig;
+
 // A few exports that help ease life for downstream crates.
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -30,13 +33,26 @@ pub use pallet_timestamp::Call as TimestampCall;
 pub use pallet_balances::Call as BalancesCall;
 pub use sp_runtime::{Permill, Perbill};
 pub use frame_support::{
-	construct_runtime, parameter_types, StorageValue,
+	construct_runtime, parameter_types, StorageValue, ord_parameter_types,
+	impl_outer_origin, impl_outer_event,
 	traits::{KeyOwnerProofSystem, Randomness},
 	weights::{
 		Weight, IdentityFee,
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 	},
 };
+
+// impl_outer_origin!{
+// 	pub enum Origin for Test where system = frame_system {}
+// }
+
+// impl_outer_event!{
+// 	pub enum Event for Test {
+// 		frame_system<T>,
+// 		pallet_balances<T>,
+// 		pallet_name_service<T>,
+// 	}
+// }
 
 /// Import the template pallet.
 pub use pallet_template;
@@ -266,6 +282,43 @@ impl pallet_template::Trait for Runtime {
 	type Event = Event;
 }
 
+impl test_pallet::Trait for Runtime {
+	type Event = Event;
+  }
+
+parameter_types! {
+	pub const BiddingPeriod: BlockNumber = 10;
+	pub const ClaimPeriod: BlockNumber = 5;
+	pub const OwnershipPeriod: BlockNumber = 100;
+	pub const MinBid: Balance = 5;
+	pub ExtensionsOn: ExtensionConfig<BlockNumber, Balance> = ExtensionConfig {
+		enabled: true,
+		extension_period: 100,
+		extension_fee: 5,
+	};
+}
+
+ord_parameter_types! {
+	pub const Manager: u64 = 100;
+	pub const Permanence: u64 = 200;
+}
+
+impl name_service::Trait for Runtime {
+	type Currency = Balances;
+	type Event = Event;
+	// type ManagerOrigin = EnsureSignedBy<Manager, AccountId>;
+	// type PermanenceOrigin = EnsureSignedBy<Permanence, AccountId>;
+	// type BiddingPeriod = BiddingPeriod;
+	// type ClaimPeriod = ClaimPeriod;
+	// type OwnershipPeriod = OwnershipPeriod;
+	// type PaymentDestination = ();
+	// type MinBid = MinBid;
+	type ExtensionConfig = ExtensionsOn;
+	type WeightInfo = ();
+}
+
+
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -283,6 +336,8 @@ construct_runtime!(
 		Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		// Include the custom logic from the template pallet in the runtime.
 		TemplateModule: pallet_template::{Module, Call, Storage, Event<T>},
+		TestPallet: test_pallet::{Module, Call, Storage, Event<T>},
+		NameService: name_service::{Module, Call, Storage, Event<T>},
 	}
 );
 

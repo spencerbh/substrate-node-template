@@ -1,41 +1,4 @@
-{
-    "Address": "AccountId",
-    "LookupSource": "AccountId",
-    "ContinuousAccountData": {
-      "principal": "u64",
-      "deposit_date": "BlockNumber"
-    },
-    "U16F16": "[u8; 4]",
-    "GroupIndex": "u32",
-    "ValueStruct": {
-      "integer": "i32",
-      "boolean": "bool"
-    },
-    "BufferIndex": "u8",
-    "AccountIdOf": "AccountId",
-    "BalanceOf": "Balance",
-    "FundInfoOf": "FundInfo",
-    "FundInfo": {
-      "beneficiary": "AccountId",
-      "deposit": "Balance",
-      "raised": "Balance",
-      "end": "BlockNumber",
-      "goal": "Balance"
-    },
-    "FundIndex": "u32",
-    "InnerThing": {
-      "number": "u32",
-      "hash": "Hash",
-      "balance": "Balance"
-    },
-    "SuperThing": {
-      "super_number": "u32",
-      "inner_thing": "InnerThing"
-    },
-    "InnerThingOf": "InnerThing",
-    "Name": "[u8;32]"
-  }
-
+make sure custom types are injected
 
 # Substrate Node Template
 

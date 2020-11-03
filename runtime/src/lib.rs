@@ -13,7 +13,8 @@ use sp_runtime::{
 	transaction_validity::{TransactionValidity, TransactionSource},
 };
 use sp_runtime::traits::{
-	BlakeTwo256, Block as BlockT, IdentityLookup, Verify, IdentifyAccount, NumberFor, Saturating,
+	BlakeTwo256, Block as BlockT, IdentityLookup, Verify, IdentifyAccount, NumberFor,
+	LookupError, Saturating, StaticLookup, Member
 };
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -286,6 +287,8 @@ impl test_pallet::Trait for Runtime {
 	type Event = Event;
   }
 
+
+
 parameter_types! {
 	pub const BiddingPeriod: BlockNumber = 10;
 	pub const ClaimPeriod: BlockNumber = 5;
@@ -304,6 +307,7 @@ ord_parameter_types! {
 }
 
 impl name_service::Trait for Runtime {
+	type AccountIndex = AccountIndex;
 	type Currency = Balances;
 	type Event = Event;
 	// type ManagerOrigin = EnsureSignedBy<Manager, AccountId>;
@@ -317,7 +321,10 @@ impl name_service::Trait for Runtime {
 	type WeightInfo = ();
 }
 
-
+impl loose_lookup::Trait for Runtime {
+	// type Event = Event;
+	type Lookie = NameService;
+}
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
@@ -338,6 +345,7 @@ construct_runtime!(
 		TemplateModule: pallet_template::{Module, Call, Storage, Event<T>},
 		TestPallet: test_pallet::{Module, Call, Storage, Event<T>},
 		NameService: name_service::{Module, Call, Storage, Event<T>},
+		LooseLookup: loose_lookup::{Module, Call},
 	}
 );
 

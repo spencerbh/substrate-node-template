@@ -55,6 +55,7 @@ sp-transaction-pool = { default-features = false, version = '2.0.0' }
 sp-version = { default-features = false, version = '2.0.0' }
 test-pallet = { path = '../pallets/test-pallet', default-features = false, version = '2.0.0' }
 name-service = { path = '../pallets/name-service', default-features = false, version = '2.0.0'}
+loose-lookup = { path = '../pallets/loose-lookup', default-features = false, version = '2.0.0'}
 
 [features]
 default = ['std']
@@ -97,4 +98,5 @@ std = [
     'sp-version/std',
     'test-pallet/std',
     'name-service/std',
+    'loose-lookup/std',
 ]

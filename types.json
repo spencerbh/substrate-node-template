@@ -33,5 +33,12 @@
       "inner_thing": "InnerThing"
     },
     "InnerThingOf": "InnerThing",
-    "Name": "[u8;32]"
+    "Name": "[u8;32]",
+    "Source": {
+      "Id": "AccountId",
+      "Index": "AccountIndex",
+      "Raw": "Vec<u8>",
+      "Address32": "[u8;32]",
+      "Address20": "[u8;20]"
+    }
   }

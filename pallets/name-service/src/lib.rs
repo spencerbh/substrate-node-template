@@ -423,8 +423,8 @@ where
 
 	fn lookup(a: Self::Source) -> Result<Self::Target, LookupError> {
 		match a {
-			MultiAddress::Id(id) => Ok(id),
-			MultiAddress::Address32(hash) => {
+			//MultiAddress::Id(id) => Ok(id), // attempts to match on AccountId
+			MultiAddress::Address32(hash) => { // attempts to match on friendly name (Address32)
 				Lookup::<T>::get(hash).ok_or(LookupError)
 			},
 			_ => Err(LookupError),

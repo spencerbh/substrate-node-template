@@ -34,9 +34,9 @@ pub enum MultiAddress<AccountId, AccountIndex> {
 	Index(#[codec(compact)] AccountIndex),
 	/// It's some arbitrary raw bytes.
 	Raw(Vec<u8>),
-	/// It's a 32 byte representation.
+	/// It's a 32 byte representation. / this is friendly name
 	Address32([u8; 32]),
-	/// Its a 20 byte representation.
+	/// Its a 20 byte representation. / this is another friendly name
 	Address20([u8; 20]),
 }
 

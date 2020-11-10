@@ -21,7 +21,7 @@
 
 use sp_std::prelude::*;
 use primitivesv1::multiaddress::MultiAddress;
-use sp_runtime::traits::{LookupError, Saturating, StaticLookup, Member};
+pub use sp_runtime::traits::{LookupError, Saturating, StaticLookup, Member};
 use frame_support::{decl_module, decl_error, decl_event, decl_storage, ensure, RuntimeDebug, Parameter};
 use frame_support::dispatch::DispatchResult;
 use frame_support::traits::{
@@ -423,7 +423,7 @@ where
 
 	fn lookup(a: Self::Source) -> Result<Self::Target, LookupError> {
 		match a {
-			//MultiAddress::Id(id) => Ok(id), // attempts to match on AccountId
+			MultiAddress::Id(id) => Ok(id), // attempts to match on AccountId
 			MultiAddress::Address32(hash) => { // attempts to match on friendly name (Address32)
 				Lookup::<T>::get(hash).ok_or(LookupError)
 			},

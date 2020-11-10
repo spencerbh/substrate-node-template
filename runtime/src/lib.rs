@@ -155,6 +155,8 @@ impl frame_system::Trait for Runtime {
 	type BaseCallFilter = ();
 	/// The identifier used to distinguish between accounts.
 	type AccountId = AccountId;
+
+	type AccountIndex = AccountIndex;
 	/// The aggregated dispatch type that is available for extrinsics.
 	type Call = Call;
 	/// The lookup mechanism to get account ID from whatever is passed in dispatchers.
@@ -324,6 +326,7 @@ impl name_service::Trait for Runtime {
 impl loose_lookup::Trait for Runtime {
 	// type Event = Event;
 	type Lookie = NameService;
+	type AccountIndex = AccountIndex;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -350,7 +353,7 @@ construct_runtime!(
 );
 
 /// The address format for describing accounts.
-pub type Address = AccountId;
+pub type Address = sp_runtime::MultiAddress<AccountId, AccountIndex>;
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 /// Block type as expected by this runtime.

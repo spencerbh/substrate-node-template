@@ -17,8 +17,8 @@ use name_service::StaticLookup;
 
 pub trait Trait: frame_system::Trait {
 	// type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
-	// type Lookie: StaticLookup<Source = Self::AccountId>;
-	type Lookie: StaticLookup <Source = MultiAddress<Self::AccountId, Self::AccountIndex>> + StaticLookup <Target = Self::AccountId> ;     
+
+	type Lookie: StaticLookup <Target = Self::AccountId> + StaticLookup <Source = MultiAddress<Self::AccountId, <Self as frame_system::Trait>::AccountIndex>> ;  
 }
 
 // decl_event!(

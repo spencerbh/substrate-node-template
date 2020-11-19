@@ -17,15 +17,19 @@ use name_service::StaticLookup;
 
 pub trait Trait: frame_system::Trait {
 	// type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
-
-	type Lookie: StaticLookup <Target = Self::AccountId> + StaticLookup <Source = MultiAddress<Self::AccountId, <Self as frame_system::Trait>::AccountIndex>> ;  
+	type AccountIndex: frame_support::Parameter + sp_runtime::traits::Member + codec::Codec + Default + sp_runtime::traits::AtLeast32Bit + Copy;
+	type Lookie: StaticLookup <Target = Self::AccountId> + StaticLookup <Source = MultiAddress<Self::AccountId, Self::AccountIndex>> ;  
 }
 
 // decl_event!(
-//     pub enum Event<T>
-//     where
-//         Source = <T as system::Trait>::
-// 
+// 	pub enum Event<T>
+// 	where
+// 		AccountId = <T as frame_system::Trait>::AccountId,
+// 	{
+// 		/// The caller is a member.
+// 		IstheDude(AccountId),
+// 	}
+// );
 
 decl_storage! {
 	trait Store for Module<T: Trait> as SimpleMap {
@@ -57,9 +61,14 @@ decl_module! {
 			let target_from_name = T::Lookie::lookup(xxx)?;
 			let target_from_account = T::Lookie::lookup(account)?;
 
+			//assert_eq!(T::Lookie::lookup, Some(account));
+
+
 			match target_from_name {
-				target_from_account => <SimpleMap<T>>::insert(&target_from_account,55)
+				target_from_account => <SimpleMap<T>>::insert(&target_from_account,5588)
 			}
+
+			// Self::deposit_event(RawEvent::IstheDude(caller));
 
             // debug::info!("this account's name is: {:?}", name);
 			//ensure!(caller == name, Error::<T>::LookupErrorororor);

@@ -55,9 +55,6 @@ pub use frame_support::{
 // 	}
 // }
 
-/// Import the template pallet.
-pub use pallet_template;
-
 /// An index to a block.
 pub type BlockNumber = u32;
 
@@ -155,8 +152,6 @@ impl frame_system::Trait for Runtime {
 	type BaseCallFilter = ();
 	/// The identifier used to distinguish between accounts.
 	type AccountId = AccountId;
-
-	type AccountIndex = AccountIndex;
 	/// The aggregated dispatch type that is available for extrinsics.
 	type Call = Call;
 	/// The lookup mechanism to get account ID from whatever is passed in dispatchers.
@@ -280,16 +275,10 @@ impl pallet_sudo::Trait for Runtime {
 	type Call = Call;
 }
 
-/// Configure the template pallet in pallets/template.
-impl pallet_template::Trait for Runtime {
-	type Event = Event;
-}
 
 impl test_pallet::Trait for Runtime {
 	type Event = Event;
   }
-
-
 
 parameter_types! {
 	pub const BiddingPeriod: BlockNumber = 10;
@@ -344,16 +333,14 @@ construct_runtime!(
 		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Module, Storage},
 		Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
-		// Include the custom logic from the template pallet in the runtime.
-		TemplateModule: pallet_template::{Module, Call, Storage, Event<T>},
 		TestPallet: test_pallet::{Module, Call, Storage, Event<T>},
 		NameService: name_service::{Module, Call, Storage, Event<T>},
-		LooseLookup: loose_lookup::{Module, Call},
+		LooseLookup: loose_lookup::{Module, Call, Storage},
 	}
 );
 
 /// The address format for describing accounts.
-pub type Address = sp_runtime::MultiAddress<AccountId, AccountIndex>;
+pub type Address = AccountId;
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 /// Block type as expected by this runtime.
